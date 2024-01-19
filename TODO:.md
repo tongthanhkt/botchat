@@ -1,4 +1,5 @@
 TODO:
+123456Axyz
 
 - luu message khong await : done
 - them openai_thread_id vao conversations, xoa bang threads

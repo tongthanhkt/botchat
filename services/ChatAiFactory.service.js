@@ -151,7 +151,7 @@ class ChatAiFactory {
           for (let i = 0; i < messages.data.length; i++) {}
           msg.reply(messages.data[0].content[0].text.value);
           MessageService.create({
-            conversation_id: conversation._id,
+            conversation_id: messagePayload.conversation_id,
             from: user._id,
             content: messages.data[0].content[0].text.value,
             type: "response",

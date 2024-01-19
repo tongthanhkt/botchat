@@ -53,13 +53,7 @@ class ChatAiFactory {
 
   initChatAi() {
     const BotTete = new Telegraf(this.botToken);
-    BotTete.command("start", (ctx) => {
-      BotTete.telegram.sendMessage(
-        ctx.chat.id,
-        `Hello there! Here is Chat bot ${this.assistant}`,
-        {}
-      );
-    });
+
     BotTete.on("message", async (msg) => {
       const chatInfo = msg.update.message.chat;
       const messageInfo = msg.update.message;

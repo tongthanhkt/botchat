@@ -67,6 +67,14 @@ class ChatAiFactory {
       const botInfo = msg.botInfo;
       const teleUser = msg.from;
       const user = await UserService.findOne(teleUser.username);
+      console.log("Tele User", teleUser);
+      if (!user) {
+        await UserService.create({
+          telegram_id: teleUser.id,
+          telegram_username: teleUser.username,
+          first_name: teleUser.first_name,
+        });
+      }
       const bot = await BotSevice.findOne(botInfo.username);
       const conversation = await ConversationService.findOne({
         user_id: user._id,

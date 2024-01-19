@@ -10,11 +10,7 @@ class UserSerivce {
   }
   static async create(payload) {
     try {
-      const doc = await User.create({
-        telegram_id: payload.id,
-        telegram_username: payload.username,
-        first_name: payload.first_name,
-      });
+      const doc = await User.create(payload);
       return doc;
     } catch (error) {
       console.log(error);

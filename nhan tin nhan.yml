@@ -1,0 +1,33 @@
+nhan tin nhan
+1. get conversation from db by telegram_chat_id
+2. if (conversation) --> step 4
+3. chua co conversation
+    - user ton tai chua, neu chua --> create user
+    - create thread
+    - create conversation
+4. xu ly tin nhan
+
+
+
+
+nhan tin nhan tu telegram
+input:
+- telegram user id
+- telegram chat id
+- telegram bot id
+
+process:
+- createUserIfNotExists(user data) --> khong await
+        + neu co user -> return
+        + neu chua co -> new user, id = telegram_123456
+
+- getOrCreateThread(telegram_chat_id) --> await
+        + neu co --> return conversation
+        + neu chua co --> create --> return conversation
+
+- saveMessage(conversation, content, "query") --> khong await
+
+- goi openai
+
+- reply qua bot
+- saveMessage(conversation, response, "response") --> khong await

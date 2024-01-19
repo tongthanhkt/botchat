@@ -17,5 +17,15 @@ class ConversationService {
       console.log(error);
     }
   }
+  static async findOneAndUpdate(filter, update) {
+    try {
+      const doc = await Conversation.findOneAndUpdate(filter, update, {
+        new: true,
+      });
+      return doc;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 module.exports = ConversationService;

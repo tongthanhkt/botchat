@@ -14,7 +14,7 @@ const conversationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    oepenai_thread_id: {
+    openai_thread_id: {
       type: String,
       default: null,
     },

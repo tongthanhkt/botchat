@@ -18,9 +18,9 @@ jobs:
       - name: Create environment file
         run: |
           touch .env
-          echo BOT_TOKEN=${{vars.BOT_TOKEN}} >> .env
-          echo MONGO_URI=${{vars.MONGO_URI}} >> .env
-          echo OPEN_AI_API_KEY=${{vars.OPEN_AI_API_KEY}} >> .env
+          echo BOT_TOKEN=${{secrets.BOT_TOKEN}} >> .env
+          echo MONGO_URI=${{secrets.MONGO_URI}} >> .env
+          echo OPEN_AI_API_KEY=${{secrets.OPEN_AI_API_KEY}} >> .env
           echo ASSISTANT_ID=${{vars.ASSISTANT_ID}} >> .env
       # - name: Install dependency
       #   run: npm install

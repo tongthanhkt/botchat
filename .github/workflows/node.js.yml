@@ -19,7 +19,7 @@ jobs:
         run: |
           touch .env
           echo BOT_TOKEN=${{vars.BOT_TOKEN}} >> .env
-          echo MONGO_URI=${{vars.MONG_URI}} >> .env
+          echo MONGO_URI=${{vars.MONGO_URI}} >> .env
           echo OPEN_AI_API_KEY=${{vars.OPEN_AI_API_KEY}} >> .env
           echo ASSISTANT_ID=${{vars.ASSISTANT_ID}} >> .env
       # - name: Install dependency

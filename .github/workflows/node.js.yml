@@ -1,29 +1,51 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  build:
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        # See log here
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - name: Create environment file
+        run: |
+          touch .env
+          echo BOT_TOKEN=${{vars.BOT_TOKEN}} >> .env
+          echo MONGO_URI=${{vars.MONG_URI}} >> .env
+          echo OPEN_AI_API_KEY=${{vars.OPEN_AI_API_KEY}} >> .env
+          echo ASSISTANT_ID=${{vars.ASSISTANT_ID}} >> .env
+      # - name: Install dependency
+      #   run: npm install
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@7.0.1
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm install
-      - run: pm2 start --name botchat-server app.js
+          switches: -avzr
+          remote_path: ~/chatbot/
+          remote_host: ${{vars.SSH_HOST}}
+          remote_user: ubuntu
+          remote_key: ${{ secrets.SSH_KEY }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: "unnecessary"
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H -p 22 54.95.200.33 >> ~/.ssh/known_hosts
+      - name: Start application
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{vars.SSH_HOST}} << 'EOF'
+            cd ~/chatbot/
+            npm install
+            pm2 stop all || true
+            pm2 start app.js --name backend-chatbot
+          EOF

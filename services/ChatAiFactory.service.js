@@ -7,12 +7,13 @@ const OpenAI = require("openai");
 const Bot = require("../models/bot.model");
 const Conversation = require("../models/conversation.model");
 async function checkRunstatus(openai, thread_id, run_id) {
-  const maxRetries = process.env.MAX_RETRIES || 10;
-  const retryInterval = process.env.RETRY_INTERVAL || 8000; // 60 seconds
+  const maxRetries = 6;
+  const retryInterval = 5000; // 60 seconds
 
   for (let retryCount = 1; retryCount <= maxRetries; retryCount++) {
     try {
       const data = await openai.beta.threads.runs.retrieve(thread_id, run_id);
+      console.log("Data :: ", data);
       if (data.status === "in_progress" || data.status === "queued") {
         console.log(
           `Attempt ${retryCount}: Status is still in progress. Waiting for ${
@@ -120,7 +121,9 @@ class ChatAiFactory {
             assistant_id: bot.openai_assistant_id,
           }
         );
-
+        console.log("Open_ai :: ", openai);
+        console.log("Open_thread_id :: ", conversation.openai_thread_id);
+        console.log("Run_id :: ", run.id);
         const isRunStatusOk = await checkRunstatus(
           openai,
           conversation.openai_thread_id,
